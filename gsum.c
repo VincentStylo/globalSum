@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <mpi.h>
-#include "fucntion.h"
+#include "function.h"
 
 int main(intargc, char **argv)
 {
  int rank, size, value;
  double sum;
 
- MPI_INIT(&argc, &argv)'
+ MPI_INIT(&argc, &argv);
  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
  MPI_ COMM_WORLD, &size);
  value = rank;
