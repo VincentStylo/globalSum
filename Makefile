@@ -18,3 +18,5 @@ function.o: fusnction.c function.h
 
 clean:
 	rm -f $(PROGS) *.o core* 
+clean-windows:
+	del -f $(PROGS) *.o core* 
