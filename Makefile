@@ -1,6 +1,6 @@
 CFLAGS = -g -Wall -Wstrict-prototypes
 PROGS = driver
-OBJECTS = gsum.o function.o
+OBJECTS = gsum.o functions.o
 LDFLAGS = -lm
 CC = gcc
 MCC = mpicc
@@ -13,8 +13,8 @@ driver: $(OBJECTS)
 gsum.o: gsum.c
 	$(MCC) $(CFLAGS) -c gsum.c
 
-function.o: function.c function.h
-	$(MCC) $(CFLAGS) -c function.c
+functions.o: functions.c functions.h
+	$(MCC) $(CFLAGS) -c functions.c
 
 clean:
 	rm -f $(PROGS) *.o core* 
