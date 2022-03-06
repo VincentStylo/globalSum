@@ -2,16 +2,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <mpi.h>
-#include "function.h"
+#include "functions.h"
 
-int main(intargc, char **argv)
+int main(int argc, char **argv)
 {
  int rank, size, value;
  double sum;
 
  MPI_INIT(&argc, &argv);
  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
- MPI_ COMM_WORLD, &size);
+ MPI_Comm_size(MPI_COMM_WORLD, &size);
  value = rank;
  global_sum(&sum, rank, size, value);
  

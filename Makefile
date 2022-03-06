@@ -3,7 +3,7 @@ PROGS = driver
 OBJECTS = gsum.o function.o
 LDFLAGS = -lm
 CC = gcc
-MCC = pmicc
+MCC = mpicc
 
 all: $(PROGS)
 
@@ -13,8 +13,8 @@ driver: $(OBJECTS)
 gsum.o: gsum.c
 	$(MCC) $(CFLAGS) -c gsum.c
 
-function.o: fusnction.c function.h
-	$(MCC) $(CFLAGS) ic funciton.c
+function.o: function.c function.h
+	$(MCC) $(CFLAGS) -c function.c
 
 clean:
 	rm -f $(PROGS) *.o core* 
