@@ -1,4 +1,5 @@
-#ifndef _FUNCTIONS_H
-#define _FUNCTIONS_H
-void global_sum( double* result, int rank, int size, double my_value);
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
+int phaseSum(int x);
+void global_sum(double* result, int rank, int size, double my_value);
 #endif

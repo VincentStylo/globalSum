@@ -8,7 +8,7 @@ MCC = mpicc
 all: $(PROGS)
 
 driver: $(OBJECTS)
-	$(MCC) $(LDFLAGS) -o driver $(OBJECTS)
+	$(MCC) $(LDFLAGS) -o driver $(OBJECTS) $(LDFLAGS)
 
 gsum.o: gsum.c
 	$(MCC) $(CFLAGS) -c gsum.c
