@@ -24,6 +24,7 @@ int main(int argc, char **argv)
 
     value = rank;
     global_sum(&sum, rank, size, value);
+    printf("OUTSIDE FUNCTION GLOBAL SUM \n\n");
     printf("FINAL IN MAIN: %d has Sum = %f \n", rank, sum);
 
     MPI_Finalize();
