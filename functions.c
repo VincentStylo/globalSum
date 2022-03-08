@@ -2,9 +2,21 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
+#include <stdbool.h>
 #include <mpi.h>
 
 #include "functions.h"
+bool exponentCheck (int size){
+      if ((size != 0 && (size & (size - 1)) == 0))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 int phaseSum(int x)
 {
     return log(x) / log(2);
@@ -14,27 +26,28 @@ void global_sum(double *Result, int rank, int size, double my_value)
 {
     *Result = my_value;
     double RECIEVER;
-    int STEP;
+    int BINARY;
     int phaseMax = phaseSum(size);
     for (int phase = 0; phase < phaseMax; phase++)
     {
-        STEP = (int)pow(2,phase);
-        if (rank == 0 || rank % 2 == 0)
+        BINARY = (rank^(phase+1));
+        if (rank % 2 == 0)
         {
-            
-            printf("Phase %d P %d recieving from %d, val %.1f \n", phase, rank, rank + STEP, my_value);
-            MPI_Recv(&RECIEVER, 1, MPI_DOUBLE, rank + STEP, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Recv(&RECIEVER, 1, MPI_DOUBLE, BINARY, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            printf("Phase %d P %d recieving from %d, val %.1f \n", phase, rank, BINARY, RECIEVER);
+            printf("Phase %d P %d sending   to   %d, val %.1f \n",phase, rank, BINARY, my_value);
+            MPI_Ssend(&my_value, 1, MPI_DOUBLE, BINARY, 1, MPI_COMM_WORLD);
             *Result += RECIEVER;
-            printf("Phase %d P %d sending   to   %d, val %.1f \n",phase, rank, rank + STEP, my_value);
-            MPI_Ssend(&my_value, 1, MPI_DOUBLE, rank + STEP, 1, MPI_COMM_WORLD);
         }
         else
         {
-            printf("Phase %d P %d sending   to   %d, val %.1f \n",phase ,rank, rank - STEP, my_value);
-            MPI_Ssend(&my_value, 1, MPI_DOUBLE, rank - STEP, 1, MPI_COMM_WORLD);
-            printf("Phase %d P %d recieving from %d, val %.1f \n",phase ,rank,  - STEP, my_value);
-            MPI_Recv(&RECIEVER, 1, MPI_DOUBLE, rank - STEP, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            printf("Phase %d P %d sending   to   %d, val %.1f \n",phase ,rank, BINARY, my_value);
+            MPI_Ssend(&my_value, 1, MPI_DOUBLE, BINARY, 1, MPI_COMM_WORLD);
+            MPI_Recv(&RECIEVER, 1, MPI_DOUBLE, BINARY, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            printf("Phase %d P %d recieving from %d, val %.1f \n",phase ,rank, BINARY, RECIEVER);
             *Result += RECIEVER;
         }
+        my_value = *Result;
+        MPI_Barrier(MPI_COMM_WORLD);
     }
 }
